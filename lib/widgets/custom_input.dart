@@ -1,5 +1,63 @@
 import 'package:flutter/material.dart';
 
+class ChatMessage extends StatelessWidget {
+  final String texto;
+  final String uid;
+  final AnimationController animationController;
+
+  const ChatMessage({Key? key, required this.texto, required this.uid, required this.animationController  })
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: animationController,
+      child: SizeTransition(
+        sizeFactor: CurvedAnimation(parent: animationController, curve: Curves.easeOut),
+        child: Container(
+          child: this.uid == '123' ? _miMensaje() : _noMensaje(),
+        ),
+      ),
+    );
+  }
+
+  Widget _miMensaje() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        margin: EdgeInsets.only(left: 40, right: 10, bottom: 10),
+        decoration: BoxDecoration(
+            color: Color.fromARGB(255, 135, 255, 165),
+            borderRadius: BorderRadius.circular(20)),
+        padding: EdgeInsets.all(10.0),
+        child: Text(
+          this.texto,
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
+    );
+
+    Text("hola");
+  }
+
+  Widget _noMensaje() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        margin: EdgeInsets.only(left: 10, right: 40, bottom: 10),
+        decoration: BoxDecoration(
+            color: Color.fromARGB(255, 194, 99, 99),
+            borderRadius: BorderRadius.circular(20)),
+        padding: EdgeInsets.all(10.0),
+        child: Text(
+          this.texto,
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
+    );
+  }
+}
+
 class BotonAzul extends StatelessWidget {
   final String text;
   final Function() onPressed;
@@ -71,7 +129,11 @@ class PiePagina extends StatelessWidget {
   final String cLineaSuperior;
   final String cLineaInferior;
 
-  const PiePagina({Key? key, required this.ruta, required this.cLineaSuperior, required this.cLineaInferior})
+  const PiePagina(
+      {Key? key,
+      required this.ruta,
+      required this.cLineaSuperior,
+      required this.cLineaInferior})
       : super(key: key);
 
   @override
