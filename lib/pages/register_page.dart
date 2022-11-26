@@ -1,5 +1,9 @@
 import 'package:fl_12_chatapp/widgets/custom_input.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../helpers/mostrar_alerta.dart';
+import '../services/auth_service.dart';
 
 class RegisterPage extends StatelessWidget {
   @override
@@ -36,6 +40,7 @@ class _Form extends StatelessWidget {
   final nombreCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Column(
       children: [
         CustomInput(
@@ -58,10 +63,25 @@ class _Form extends StatelessWidget {
           height: 25,
         ),
         BotonAzul(
-          onPressed: () {
-            print(emailCtrl.text);
-            print(passwordCtrl.text);
-          },
+          onPressed: authService.autenticando == false 
+          ? () async
+          {
+            FocusScope.of(context).unfocus();
+            final loginOk = await authService.nuevo(
+            nombreCtrl.text.trim(),
+            emailCtrl.text.trim(), passwordCtrl.text.trim());
+            if (loginOk==true) 
+              {
+                //conectar al socket server
+                Navigator.pushReplacementNamed(context, 'login');
+              } 
+              else 
+              {
+                mostrarAlerta(context, "Error al crear el registro", loginOk);
+              }
+            }
+          : () {null; }
+          ,
           text: 'Guardar',
         ),
         /*

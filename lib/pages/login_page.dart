@@ -1,5 +1,9 @@
+import 'package:fl_12_chatapp/services/auth_service.dart';
 import 'package:fl_12_chatapp/widgets/custom_input.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../helpers/mostrar_alerta.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -10,12 +14,18 @@ class LoginPage extends StatelessWidget {
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(), // como que rebota
           child: Container(
-            height: MediaQuery.of(context).size.height ,
+            height: MediaQuery.of(context).size.height,
             child: Column(
               children: [
-                Logo(mensaje: 'Messenger',),
+                Logo(
+                  mensaje: 'Messenger',
+                ),
                 _Form(),
-                PiePagina(ruta: 'register', cLineaInferior: 'Crea una ahora!!!', cLineaSuperior: '¿No tienes cuenta?',),
+                PiePagina(
+                  ruta: 'register',
+                  cLineaInferior: 'Crea una ahora!!!',
+                  cLineaSuperior: '¿No tienes cuenta?',
+                ),
               ],
             ),
           ),
@@ -25,11 +35,19 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class _Form extends StatelessWidget {
+class _Form extends StatefulWidget {
+  @override
+  State<_Form> createState() => _FormState();
+}
+
+class _FormState extends State<_Form> {
   final emailCtrl = TextEditingController();
+
   final passwordCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Column(
       children: [
         CustomInput(
@@ -47,10 +65,25 @@ class _Form extends StatelessWidget {
           height: 25,
         ),
         BotonAzul(
-          onPressed: () {
-            print(emailCtrl.text);
-            print(passwordCtrl.text);
-          },
+          onPressed: authService.autenticando == false
+              ? () async {
+                  FocusScope.of(context).unfocus();
+                  final loginOk = await authService.login(
+                      emailCtrl.text.trim(), passwordCtrl.text.trim());
+                  if (loginOk) 
+                  {
+                    //conectar al socket server
+                    Navigator.pushReplacementNamed(context, 'usuarios');
+                  } 
+                  else 
+                  {
+                    mostrarAlerta(context, "Error", "Revise las credenciales");
+                  }
+                }
+              : () {
+                  print("revisa el autenticando en true");
+                  null;
+                },
           text: 'Ingrese',
         ),
         /*

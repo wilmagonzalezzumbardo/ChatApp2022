@@ -1,16 +1,37 @@
+import 'dart:convert';
+
 class Usuario {
-  bool online;
-  String email;
-  String nombre;
-  String password;
-  String uid;
+    Usuario({
+        required this.nombre,
+        required this.password,
+        required this.email,
+        required this.online,
+        required this.uid,
+    });
 
-  Usuario({
-    required this.online,
-    required this.email,
-    required this.nombre,
-    required this.password,
-    required this.uid
-  });
+    String nombre;
+    String? password;
+    String email;
+    bool online;
+    String uid;
 
+    factory Usuario.fromJson(String str) => Usuario.fromMap(json.decode(str));
+
+    String toJson() => json.encode(toMap());
+
+    factory Usuario.fromMap(Map<String, dynamic> json) => Usuario(
+        nombre: json["nombre"],
+        password: json["password"],
+        email: json["email"],
+        online: json["online"],
+        uid: json["uid"],
+    );
+
+    Map<String, dynamic> toMap() => {
+        "nombre": nombre,
+        "password": password,
+        "email": email,
+        "online": online,
+        "uid": uid,
+    };
 }

@@ -1,4 +1,5 @@
 import 'package:fl_12_chatapp/routes/routes.dart';
+import 'package:fl_12_chatapp/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,10 @@ class ManejadorEstado extends StatelessWidget {
         (
           create: (_) => new ClassProvider()
         ),
+        ChangeNotifierProvider
+        (
+          create: (_) => new AuthService()
+        ),
       ],
       child: MyApp(),
     );
@@ -40,7 +45,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chat App',
       debugShowCheckedModeBanner: false,
-      initialRoute: 'chat',
+      initialRoute: 'loading',
       routes: appRoutes,
     );
   }
