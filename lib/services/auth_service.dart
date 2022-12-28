@@ -38,21 +38,16 @@ class AuthService with ChangeNotifier {
     this.autenticando = true;
     final data = {'email': email, 'password': password};
     var da = '${Environment.apiUrl}' + '/api/login/buscalogin';
-    print(da);
-
     var url = Uri.https('${Environment.apiUrl}', '/api/login/buscalogin');
-
     final resp = await http.post(url,
         body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
     this.autenticando = false;
     if (resp.statusCode == 200) {
       final loginResponse = LoginResponse.fromJson(resp.body);
-      print(resp.body);
       this.usuario = loginResponse.usuario;
       await this._guardarToken(loginResponse.token!);
       return true;
     } else {
-      print(resp.body);
       return false;
     }
   }
@@ -66,21 +61,16 @@ class AuthService with ChangeNotifier {
       'passwordConfirmation': password
     };
     var da = '${Environment.apiUrl}' + '/api/login/new';
-    print(da);
-
     var url = Uri.https('${Environment.apiUrl}', '/api/login/new');
-
     final resp = await http.post(url,
         body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
     this.autenticando = false;
     if (resp.statusCode == 200) {
       final loginResponse = LoginResponse.fromJson(resp.body);
-      print(resp.body);
       this.usuario = loginResponse.usuario;
       await this._guardarToken(loginResponse.token!);
       return true;
     } else {
-      print(resp.body);
       final respBody = jsonDecode(resp.body);
       return respBody['msg'];
     }
@@ -112,6 +102,5 @@ class AuthService with ChangeNotifier {
 
   Future logout() async {
     await _storage.delete(key: 'token');
-    print("borrando el token");
   }
 }

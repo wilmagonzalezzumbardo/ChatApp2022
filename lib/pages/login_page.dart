@@ -1,4 +1,5 @@
 import 'package:fl_12_chatapp/services/auth_service.dart';
+import 'package:fl_12_chatapp/services/socketService.dart';
 import 'package:fl_12_chatapp/widgets/custom_input.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -48,6 +49,7 @@ class _FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    final socketService = Provider.of<SocketService>(context);
     return Column(
       children: [
         CustomInput(
@@ -70,18 +72,15 @@ class _FormState extends State<_Form> {
                   FocusScope.of(context).unfocus();
                   final loginOk = await authService.login(
                       emailCtrl.text.trim(), passwordCtrl.text.trim());
-                  if (loginOk) 
-                  {
+                  if (loginOk) {
                     //conectar al socket server
+                    socketService.connect();
                     Navigator.pushReplacementNamed(context, 'usuarios');
-                  } 
-                  else 
-                  {
+                  } else {
                     mostrarAlerta(context, "Error", "Revise las credenciales");
                   }
                 }
               : () {
-                  print("revisa el autenticando en true");
                   null;
                 },
           text: 'Ingrese',
@@ -99,8 +98,6 @@ class _FormState extends State<_Form> {
               shape: StadiumBorder(),
               child: Text("Ingresar"),
               onPressed: () {
-                print(emailCtrl.text);
-                print(passwordCtrl.text);
               },
             ),
           ),

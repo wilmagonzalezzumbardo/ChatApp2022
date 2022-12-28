@@ -1,5 +1,7 @@
 import 'package:fl_12_chatapp/routes/routes.dart';
 import 'package:fl_12_chatapp/services/auth_service.dart';
+import 'package:fl_12_chatapp/services/chat_service.dart';
+import 'package:fl_12_chatapp/services/socketService.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +32,14 @@ class ManejadorEstado extends StatelessWidget {
         (
           create: (_) => new AuthService()
         ),
+        ChangeNotifierProvider
+        (
+          create: (_) => new SocketService()
+        ),
+        ChangeNotifierProvider
+        (
+          create: (_) => new ChatService()
+        ),
       ],
       child: MyApp(),
     );
@@ -41,7 +51,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider1 = Provider.of<ClassProvider>(context);
-    print(provider1.estaEscribiendo);
     return MaterialApp(
       title: 'Chat App',
       debugShowCheckedModeBanner: false,

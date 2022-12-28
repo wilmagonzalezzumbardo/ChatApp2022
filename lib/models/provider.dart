@@ -24,7 +24,6 @@ class ClassProvider extends ChangeNotifier {
 
   set estaEscribiendo1(bool valor) {
     this.estaEscribiendo = valor;
-    print(this.estaEscribiendo);
     notifyListeners();
   }
 }

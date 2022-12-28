@@ -97,8 +97,6 @@ class _Form extends StatelessWidget {
               shape: StadiumBorder(),
               child: Text("Ingresar"),
               onPressed: () {
-                print(emailCtrl.text);
-                print(passwordCtrl.text);
               },
             ),
           ),
